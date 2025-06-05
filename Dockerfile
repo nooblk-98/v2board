@@ -17,10 +17,12 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 # Copy environment file and set Laravel application key
 
 
-RUN  cp ./docker/entrypoint.sh /entrypoint.sh && \
+RUN cp ./docker/entrypoint.sh /entrypoint.sh && \
+    cp ./docker/.htaccess /var/www/html/public/.htaccess && \
     chmod +x /entrypoint.sh
 
-# RUN mv -f ./docker/V2boardInstall.php app/Console/Commands/V2boardInstall.php
+
+RUN mv -f ./docker/V2boardInstall.php app/Console/Commands/V2boardInstall.php
 
 
 
