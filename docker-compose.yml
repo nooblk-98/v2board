@@ -1,9 +1,7 @@
 
 services:
   web:
-    build:
-      context: .   # Path to your Laravel project root
-      dockerfile: Dockerfile
+    image: ghcr.io/nooblk-98/v2board:latest
     container_name: v2board
     environment:
       ADMIN_MAIL: admin@admin.com
