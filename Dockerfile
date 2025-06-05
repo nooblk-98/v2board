@@ -5,9 +5,6 @@ FROM ghcr.io/nooblk-98/php-nooblk:8.2-apache
 COPY . /var/www/html
 WORKDIR /var/www/html
 
-# Configure Git to treat the project directory as safe
-RUN git config --global --add safe.directory /var/www/html
-
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
@@ -18,13 +15,15 @@ RUN composer install --optimize-autoloader --no-dev --no-scripts
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Copy environment file and set Laravel application key
-COPY ../../.env.example /var/www/html/.env
 
-# Install Node.js dependencies and build frontend assets (uncomment if necessary)
-# RUN npm install && npm run build
+RUN cp .env.example .env && \
+    cp ./docker/entrypoint.sh /entrypoint.sh && \
+    chmod +x /entrypoint.sh
+
+RUN mv -f ./docker/V2boardInstall.php app/Console/Commands/V2boardInstall.php
+
+
 
 # Expose port 80 for Apache server
 EXPOSE 80
-COPY ../docker/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
