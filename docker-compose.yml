@@ -1,0 +1,47 @@
+
+services:
+  web:
+    build:
+      context: .   # Path to your Laravel project root
+      dockerfile: Dockerfile
+    container_name: v2board
+    ports:
+      - "8080:80"
+    depends_on:
+      - mariadb
+      - redis
+
+  mariadb:
+    image: mariadb:10
+    container_name: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: v2board123+
+      MYSQL_DATABASE: v2board
+      MYSQL_USER: v2boarduser
+      MYSQL_PASSWORD: "v2boarduser123"
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin_database
+    restart: always
+    environment:
+      UPLOAD_LIMIT: 100G
+      PMA_HOST: mariadb
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: wladmin@123+
+    ports:
+      - "8081:80"
+    depends_on:
+      - mariadb
+
+  redis:
+    image: redis:latest
+    container_name: redis
+
+volumes:
+  db_data:
