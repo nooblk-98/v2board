@@ -1,5 +1,5 @@
 # Use PHP 8.2 with Apache as the base image
-FROM ghcr.io/nooblk-98/php-nooblk:8.2-apache
+FROM ghcr.io/nooblk-98/php-nooblk:7.4-apache
 
 # Copy application files into the container
 COPY . /var/www/html
@@ -16,8 +16,8 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 
 # Copy environment file and set Laravel application key
 
-RUN cp .env.example .env && \
-    cp ./docker/entrypoint.sh /entrypoint.sh && \
+
+RUN  cp ./docker/entrypoint.sh /entrypoint.sh && \
     chmod +x /entrypoint.sh
 
 RUN mv -f ./docker/V2boardInstall.php app/Console/Commands/V2boardInstall.php
