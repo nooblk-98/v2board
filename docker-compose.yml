@@ -5,6 +5,9 @@ services:
       context: .   # Path to your Laravel project root
       dockerfile: Dockerfile
     container_name: v2board
+    environment:
+      ADMIN_MAIL: admin@admin.com
+      ADMIN_PASSWORD: admin@123+
     ports:
       - "8080:80"
     depends_on:

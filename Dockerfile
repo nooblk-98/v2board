@@ -1,4 +1,4 @@
-# Use PHP 8.2 with Apache as the base image
+# base image
 FROM ghcr.io/nooblk-98/php-nooblk:7.4-apache
 
 # Copy application files into the container
@@ -14,19 +14,15 @@ RUN composer install --optimize-autoloader --no-dev --no-scripts
 # Set proper permissions for Laravel storage and cache directories
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Copy environment file and set Laravel application key
-
-
-RUN cp ./docker/entrypoint.sh /entrypoint.sh && \
-    cp ./docker/.htaccess /var/www/html/public/.htaccess && \
+# Copy environment files
+RUN cp ./docker/bin/entrypoint.sh /entrypoint.sh && \
+    cp ./docker/configurations/.htaccess /var/www/html/public/.htaccess && \
     chmod +x /entrypoint.sh
 
-
-RUN mv -f ./docker/V2boardInstall.php app/Console/Commands/V2boardInstall.php
-
-
+# Move Custom init script
+RUN mv -f ./docker/bin/V2boardInstall.php app/Console/Commands/V2boardInstall.php && \
+    mv -f ./docker/configurations/.env.example .env.example
 
 # Expose port 80 for Apache server
 EXPOSE 80
-CMD ["apache2-foreground"]
-#ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]

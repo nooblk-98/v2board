@@ -76,19 +76,19 @@ class V2boardInstall extends Command
 
             $this->info('Database import completed.');
 
-            $email = '';
-            while (!$email) {
-                $email = $this->ask('Enter admin email?');
+            $email = env('ADMIN_MAIL');
+            $password = env('ADMIN_PASSWORD');
+
+            if (!$email || !$password) {
+                $this->error('Missing admin credentials: set ADMIN_MAIL and ADMIN_PASSWORD in .env or container env');
+                return 1; // Exit with failure
             }
 
-            $password = Helper::guid(false);
             if (!$this->registerAdmin($email, $password)) {
                 abort(500, 'Admin registration failed, please try again.');
             }
 
-            $this->info('All set.');
-            $this->info("Admin email: {$email}");
-            $this->info("Admin password: {$password}");
+            $this->info("Admin registered. Email: $email, Password: $password");
 
             $defaultSecurePath = hash('crc32b', config('app.key'));
             $this->info("Visit http(s)://your-domain/{$defaultSecurePath} to access the admin panel. You can change your password from the user center.");
