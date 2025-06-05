@@ -28,20 +28,6 @@ services:
     ports:
       - "3306:3306"
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin_database
-    restart: always
-    environment:
-      UPLOAD_LIMIT: 100G
-      PMA_HOST: mariadb
-      PMA_PORT: 3306
-      MYSQL_ROOT_PASSWORD: wladmin@123+
-    ports:
-      - "8081:80"
-    depends_on:
-      - mariadb
-
   redis:
     image: redis:latest
     container_name: redis
