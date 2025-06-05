@@ -20,10 +20,11 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 RUN  cp ./docker/entrypoint.sh /entrypoint.sh && \
     chmod +x /entrypoint.sh
 
-RUN mv -f ./docker/V2boardInstall.php app/Console/Commands/V2boardInstall.php
+# RUN mv -f ./docker/V2boardInstall.php app/Console/Commands/V2boardInstall.php
 
 
 
 # Expose port 80 for Apache server
 EXPOSE 80
-ENTRYPOINT ["/entrypoint.sh"]
+CMD ["apache2-foreground"]
+#ENTRYPOINT ["/entrypoint.sh"]
