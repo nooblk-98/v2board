@@ -30,6 +30,17 @@ RUN cp ./docker/configurations/.htaccess public/.htaccess
 RUN mv -f ./docker/bin/V2boardInstall.php app/Console/Commands/V2boardInstall.php && \
     mv -f ./docker/configurations/.env.example .env.example
 
+
+# Copy cron file to container
+COPY ./docker/bin/laravel-cron /etc/cron.d/laravel-cron
+
+# Give execution rights on the cron job
+RUN chmod 0644 /etc/cron.d/laravel-cron
+
+# Apply cron job
+RUN crontab /etc/cron.d/laravel-cron
+
+
 # Expose Apache port
 EXPOSE 80
 

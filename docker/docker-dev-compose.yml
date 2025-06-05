@@ -1,0 +1,36 @@
+
+services:
+  web:
+    build:
+      context: .  
+      dockerfile: Dockerfile
+    container_name: v2board
+    environment:
+      ADMIN_MAIL: admin@admin.com
+      ADMIN_PASSWORD: admin@123+
+    ports:
+      - "8080:80"
+    depends_on:
+      - mariadb
+      - redis
+
+  mariadb:
+    image: mariadb:10
+    container_name: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: v2board123+
+      MYSQL_DATABASE: v2board
+      MYSQL_USER: v2boarduser
+      MYSQL_PASSWORD: "v2boarduser123"
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  redis:
+    image: redis:latest
+    container_name: redis
+
+volumes:
+  db_data:
