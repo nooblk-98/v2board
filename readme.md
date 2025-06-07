@@ -63,13 +63,13 @@ volumes:
 
 ## Deployment Guide
 
-### 1. 🛠 Start the Stack
+### 🛠 Start the Stack
 
 ```bash
 docker compose up -d
 ```
 
-## 🛠 Fix Permissions (if needed)
+### 🛠 Fix Permissions
 
 If Laravel encounters permission issues (e.g., can't write to `storage/` or `bootstrap/cache`), run:
 
@@ -79,7 +79,7 @@ docker exec -u root v2board chown -R www-data:www-data /var/www/html
 
 ---
 
-### 2. 🔍 Access the Web UI
+### 🛠 Access the Web UI
 
 Visit: [http://localhost:8080](http://localhost:8080)
 
