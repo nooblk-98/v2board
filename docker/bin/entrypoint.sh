@@ -1,14 +1,12 @@
 #!/bin/sh
 set -e  # Exit on any error
 
-# # php storage link create
-# php artisan storage:link || true
+# php storage link create
+php artisan storage:link || true
 
-# # Starting PM2 queue worker...
-# pm2 start /var/www/html/docker/schedulers/scheduler.config.js
-# pm2 save
-# pm2 startup
+echo " Installing Configurations please wait ! "
 
+sleep 10
 
 echo " "
 echo "============================================================================="
