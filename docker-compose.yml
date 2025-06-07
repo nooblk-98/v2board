@@ -1,3 +1,4 @@
+version: "3.8"
 
 services:
   web:
@@ -13,6 +14,9 @@ services:
     depends_on:
       - mariadb
       - redis
+    volumes:
+      - web_data:/var/www/html
+    user: "root"
 
   mariadb:
     image: mariadb:10
@@ -34,3 +38,4 @@ services:
 
 volumes:
   db_data:
+  web_data:
