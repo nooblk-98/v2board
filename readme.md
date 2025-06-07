@@ -63,16 +63,18 @@ volumes:
 
 ## 🚀 Deployment Guide
 
-### 1. ▶️ Start the Stack
+### 1. 🛠 Start the Stack
 
 ```bash
 docker compose up -d
 ```
 
-The container will automatically detect if `.env` is missing and run:
+## 🛠 Fix Permissions (if needed)
+
+If Laravel encounters permission issues (e.g., can't write to `storage/` or `bootstrap/cache`), run:
 
 ```bash
-php artisan v2board:install
+docker exec -u root v2board chown -R www-data:www-data /var/www/html
 ```
 
 ---
@@ -123,16 +125,6 @@ docker restart v2board
 ```
 
 This will trigger auto-installation and re-register a new admin using updated environment variables.
-
----
-
-## 🛠 Fix Permissions (if needed)
-
-If Laravel encounters permission issues (e.g., can't write to `storage/` or `bootstrap/cache`), run:
-
-```bash
-docker exec -u root v2board chown -R www-data:www-data /var/www/html
-```
 
 ---
 
