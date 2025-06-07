@@ -85,7 +85,7 @@ Visit: [http://localhost:8080](http://localhost:8080)
 
 ---
 
-## 🔐 Admin Login Details
+## 🛠 Admin Login Details
 
 Your admin credentials and access URL are printed in the container logs on first startup.
 
@@ -96,7 +96,7 @@ Your admin credentials and access URL are printed in the container logs on first
 
 These are set in `docker-compose.yml` under the `environment:` section.
 
-### 📜 Retrieve the Admin Link
+### 🛠 Retrieve the Admin Link
 
 To retrieve your admin login URL:
 
@@ -115,7 +115,7 @@ Visit http(s)://your-domain/ff8f4b24 to access the admin panel.
 
 ---
 
-### 🔁 Reset Admin Credentials
+### 🛠 Reset Admin Credentials
 
 To reinitialize the app with a new admin account:
 
@@ -134,14 +134,14 @@ For a complete step-by-step guide, visit:
 
 🛠 **[V2Board Docker Deployment Guide](https://www.itsnooblk.com/posts/v2board-docker/)**
 
-## 🧩 Base Image Details
+## 🛠 Base Image Details
 
 The `ghcr.io/nooblk-98/php-docker-nginx:php82` base image includes:
 
-* 🧠 PHP 8.2 (FPM) on Alpine Linux
-* 🚀 Nginx with Laravel-compatible `/public` root
-* 🔁 Supervisor to manage services
-* 🧰 PHP Extensions:
+*  PHP 8.2 (FPM) on Alpine Linux
+*  Nginx with Laravel-compatible `/public` root
+*  Supervisor to manage services
+*  PHP Extensions:
 
   * `pdo_mysql`, `redis`, `curl`, `mbstring`, `gd`, `imagick`, `soap`, `intl`, `bcmath`, `opcache`, and more
 * 🛠 Designed for Laravel/V2Board deployments
