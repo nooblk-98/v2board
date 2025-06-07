@@ -1,4 +1,4 @@
-# 🚀 V2Board Dockerized Deployment
+# V2Board Dockerized Deployment
 
 A fully Dockerized, production-ready container image for [V2Board](https://github.com/v2board/v2board), running on Alpine Linux with **PHP 8.2 (FPM)**, **Nginx**, **Supervisor**, **Redis**, and **MariaDB**.
 
@@ -61,7 +61,7 @@ volumes:
 
 ---
 
-## 🚀 Deployment Guide
+## Deployment Guide
 
 ### 1. 🛠 Start the Stack
 
