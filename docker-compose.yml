@@ -1,7 +1,9 @@
 
 services:
   web:
-    image: ghcr.io/nooblk-98/v2board:latest
+    build:
+      context: .  
+      dockerfile: Dockerfile
     container_name: v2board
     environment:
       ADMIN_MAIL: admin@admin.com
