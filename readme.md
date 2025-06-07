@@ -14,7 +14,7 @@ This setup is optimized for performance, portability, and maintainability.
 - 🔄 Laravel scheduler auto-run enabled
 - 🧰 Includes common PHP extensions: `pdo_mysql`, `redis`, `curl`, `gd`, `imagick`, `soap`, `intl`, etc.
 - 🔐 Secure, production-optimized Alpine Linux base
-- 🧠 `.env` detection + auto `v2board:install`
+- 🧠 `.env` detection + auto `v2board:install` on first run
 
 ---
 
@@ -63,31 +63,21 @@ volumes:
 
 ## 🚀 Deployment Guide
 
-### 1. 📁 Create `.env` (optional)
-
-If `.env` is not present on first run, the container auto-runs:
-
-```bash
-php artisan v2board:install
-```
-
-Or you can copy the default:
-
-```bash
-cp docker/configurations/.env.example .env
-```
-
----
-
-### 2. ▶️ Start the Stack
+### 1. ▶️ Start the Stack
 
 ```bash
 docker compose up -d
 ```
 
+The container will automatically detect if `.env` is missing and run:
+
+```bash
+php artisan v2board:install
+```
+
 ---
 
-### 3. 🔍 Access the Web UI
+### 2. 🔍 Access the Web UI
 
 Visit: [http://localhost:8080](http://localhost:8080)
 
@@ -102,30 +92,43 @@ Your admin credentials and access URL are printed in the container logs on first
 * **Email:** `admin@admin.com`
 * **Password:** `admin@123+`
 
-Set via `docker-compose.yml` → `environment:` section.
+These are set in `docker-compose.yml` under the `environment:` section.
 
 ### 📜 Retrieve the Admin Link
 
-Run this to find your admin login URL:
+To retrieve your admin login URL:
 
 ```bash
 docker logs v2board | grep -i admin
 ```
 
-Sample output:
+Example:
 
 ```
 Admin registered. Email: admin@admin.com, Password: admin@123+
 Visit http(s)://your-domain/ff8f4b24 to access the admin panel.
 ```
 
-> Replace `your-domain` with your actual domain or public IP.
+> Replace `your-domain` with your real domain or public IP address.
+
+---
+
+### 🔁 Reset Admin Credentials
+
+To reinitialize the app with a new admin account:
+
+```bash
+docker exec -it v2board rm -f /var/www/html/.env
+docker restart v2board
+```
+
+This will trigger auto-installation and re-register a new admin using updated environment variables.
 
 ---
 
 ## 🛠 Fix Permissions (if needed)
 
-If Laravel can't write to `storage/` or `bootstrap/cache`, run:
+If Laravel encounters permission issues (e.g., can't write to `storage/` or `bootstrap/cache`), run:
 
 ```bash
 docker exec -u root v2board chown -R www-data:www-data /var/www/html
@@ -138,12 +141,12 @@ docker exec -u root v2board chown -R www-data:www-data /var/www/html
 The `ghcr.io/nooblk-98/php-docker-nginx:php82` base image includes:
 
 * 🧠 PHP 8.2 (FPM) on Alpine Linux
-* 🚀 Nginx with public folder root
+* 🚀 Nginx with Laravel-compatible `/public` root
 * 🔁 Supervisor to manage services
 * 🧰 PHP Extensions:
 
-  * `pdo_mysql`, `redis`, `curl`, `mbstring`, `gd`, `imagick`, `soap`, `intl`, `bcmath`, etc.
-* 🎯 Optimized for Laravel/V2Board production workloads
+  * `pdo_mysql`, `redis`, `curl`, `mbstring`, `gd`, `imagick`, `soap`, `intl`, `bcmath`, `opcache`, and more
+* 🛠 Designed for Laravel/V2Board deployments
 
 ---
 
@@ -165,7 +168,3 @@ MIT — free to use, fork, and modify.
 * [V2Board](https://github.com/v2board/v2board)
 * [mlocati/docker-php-extension-installer](https://github.com/mlocati/docker-php-extension-installer)
 * [Official PHP Docker images](https://hub.docker.com/_/php)
-
-```
-
----
