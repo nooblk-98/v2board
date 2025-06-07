@@ -16,7 +16,6 @@ services:
       - redis
     volumes:
       - web_data:/var/www/html
-    user: "root"
 
   mariadb:
     image: mariadb:10
