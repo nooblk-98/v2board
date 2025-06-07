@@ -1,48 +1,51 @@
 # Base image
-FROM ghcr.io/nooblk-98/php-nooblk:7.4-apache
+FROM ghcr.io/nooblk-98/php-docker-nginx:php82
 
 # Set working directory
 WORKDIR /var/www/html
 
+# Install system tools (e.g., dos2unix)
+RUN apk add --no-cache dos2unix curl git unzip nano
+
+# PHP extension installer
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+
+# Git safe directory for Laravel
+RUN git config --global --add safe.directory /var/www/html
+
+# Fix nginx root to /public
+RUN sed -i 's|root /var/www/html;|root /var/www/html/public;|' /etc/nginx/nginx.conf
+
 # Copy application files
 COPY . .
-
-# Install system tools (e.g., dos2unix)
-RUN apt-get update && apt-get install -y dos2unix curl git unzip nano
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Install PHP project dependencies
+# Install PHP dependencies
 RUN composer install --optimize-autoloader --no-dev --no-scripts
-
-# Set permissions for Laravel
-RUN chown -R www-data:www-data storage bootstrap/cache
 
 # Copy and fix entrypoint script
 RUN cp ./docker/bin/entrypoint.sh /entrypoint.sh && \
     dos2unix /entrypoint.sh && chmod +x /entrypoint.sh
 
-# Copy .htaccess to public directory
-RUN cp ./docker/configurations/.htaccess public/.htaccess
-
 # Move custom Laravel command and .env
 RUN mv -f ./docker/bin/V2boardInstall.php app/Console/Commands/V2boardInstall.php && \
     mv -f ./docker/configurations/.env.example .env.example
 
+# Set proper permissions for Laravel
+RUN chown -R www-data:www-data /var/www/html && \
+    chmod -R 755 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Copy cron file to container
-COPY ./docker/bin/laravel-cron /etc/cron.d/laravel-cron
-
-# Give execution rights on the cron job
-RUN chmod 0644 /etc/cron.d/laravel-cron
-
-# Apply cron job
-RUN crontab /etc/cron.d/laravel-cron
+COPY ./docker/bin/schedule-runner.sh /usr/local/bin/schedule-runner.sh
+RUN chmod +x /usr/local/bin/schedule-runner.sh
 
 
-# Expose Apache port
+# Supervisor Tasks for Laravel
+COPY ./docker/configurations/supervisor/conf.d/*.conf /etc/supervisor/conf.d/
+
+# Expose HTTP port
 EXPOSE 80
 
-# Start the container using the custom entrypoint
+# Use custom entrypoint
 ENTRYPOINT ["/entrypoint.sh"]

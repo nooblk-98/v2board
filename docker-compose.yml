@@ -1,7 +1,10 @@
+version: "3.8"
 
 services:
   web:
-    image: ghcr.io/nooblk-98/v2board:latest
+    build:
+      context: .  
+      dockerfile: Dockerfile
     container_name: v2board
     environment:
       ADMIN_MAIL: admin@admin.com
@@ -11,6 +14,8 @@ services:
     depends_on:
       - mariadb
       - redis
+    volumes:
+      - web_data:/var/www/html
 
   mariadb:
     image: mariadb:10
@@ -32,3 +37,4 @@ services:
 
 volumes:
   db_data:
+  web_data:
