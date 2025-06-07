@@ -21,14 +21,12 @@ echo " "
 echo "============================================================================="
 echo " "
 
-# # Fix permissions (only Laravel's writable dirs, not everything)
-# chown -R www-data:www-data *
+chown -R www-data:www-data /var/www/html && \
+    chmod -R 755 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Start PHP-FPM
-echo "Starting PHP-FPM..."
-php-fpm -D
+# Start supervisor services (ginx, php-fpm)
+exec supervisord -c /etc/supervisord.conf
 
-# Start Nginx in foreground
-echo "Starting Nginx..."
-exec nginx -g "daemon off;"
+
+
 
