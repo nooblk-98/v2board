@@ -128,6 +128,12 @@ This will trigger auto-installation and re-register a new admin using updated en
 
 ---
 
+### 📘 Full Setup Guide
+
+For a complete step-by-step guide, visit:
+
+🛠 **[V2Board Docker Deployment Guide](https://www.itsnooblk.com/posts/v2board-docker/)**
+
 ## 🧩 Base Image Details
 
 The `ghcr.io/nooblk-98/php-docker-nginx:php82` base image includes:
