@@ -4,11 +4,6 @@
 
 # ───────────────────────────────────────────────
 
-MODEL=$(ubus call system board | jsonfilter -e '@.model' 2>/dev/null)
-if [ "$MODEL" != "Arcadyan AW1000" ]; then
-  echo "This firmware flasher only supports Arcadyan AW1000."
-  exit 1
-fi
 # ───────────────────────────────────────────────
 
 SERVER_URL="http://80.225.221.245:7000/get_file"
